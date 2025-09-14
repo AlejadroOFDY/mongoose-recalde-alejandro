@@ -55,7 +55,7 @@ export const findProjectById = async (req, res) => {
 };
 
 // actualizar
-export const UpdateProject = async (req, res) => {
+export const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description, duration } = req.body;

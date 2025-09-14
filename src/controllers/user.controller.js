@@ -69,7 +69,7 @@ export const findUserById = async (req, res) => {
 };
 
 // actualizar
-export const UpdateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const {
