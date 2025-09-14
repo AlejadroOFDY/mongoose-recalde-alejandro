@@ -16,6 +16,7 @@ const ProjectSchema = new Schema(
       {
         type: Types.ObjectId,
         ref: "User",
+        required: true,
       },
     ],
   },
