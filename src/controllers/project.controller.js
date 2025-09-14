@@ -4,19 +4,19 @@ import { UserModel } from "../models/user.model.js";
 // crear
 export const createProject = async (req, res) => {
   try {
-    const { name, description, duration, members } = req.body;
+    const { name, description, duration, creator } = req.body;
 
     const newProject = await ProjectModel.create({
       name,
       description,
       duration,
-      members: members,
+      creator,
     });
     await UserModel.updateMany(
-      { _id: { $in: members } },
+      { _id: { $in: creator } },
       { $push: { projects: newProject._id } }
     );
-    return res.status(200).json(newProject);
+    return res.status(201).json(newProject);
   } catch (error) {
     return res.status(500).json({
       error: error.message,
@@ -28,7 +28,7 @@ export const createProject = async (req, res) => {
 // buscar todos
 export const findAllProjects = async (req, res) => {
   try {
-    const projects = await ProjectModel.find().populate("members");
+    const projects = await ProjectModel.find().populate("creator");
     return res.status(200).json(projects);
   } catch (error) {
     return res.status(500).json({
@@ -43,7 +43,7 @@ export const findProjectById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const project = await ProjectModel.findById(id).populate("members");
+    const project = await ProjectModel.findById(id).populate("creator");
 
     return res.status(200).json(project);
   } catch (error) {

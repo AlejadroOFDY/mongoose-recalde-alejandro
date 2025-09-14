@@ -1,4 +1,5 @@
 import { UserModel } from "../models/user.model.js";
+import { ProjectModel } from "../models/project.model.js";
 
 // crear
 export const createUser = async (req, res) => {
@@ -106,7 +107,8 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await UserModel.findByIdAndDelete(id);
+    const user = await UserModel.findByIdAndUpdate(id, { deleted: true });
+    await ProjectModel.findByIdAndDelete(user.projects);
     return res.status(200).json({ msg: "Eliminación exitosa" });
   } catch (error) {
     return res.status(500).json({

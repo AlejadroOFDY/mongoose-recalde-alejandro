@@ -1,4 +1,5 @@
 import { PlantModel } from "../models/plant.model.js";
+import { ListModel } from "../models/list.model.js";
 
 export const createPlant = async (req, res) => {
   try {
@@ -33,7 +34,7 @@ export const createPlant = async (req, res) => {
       region,
       idioma,
     });
-    return res.status(200).json(newPlant);
+    return res.status(201).json(newPlant);
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -62,7 +63,6 @@ export const findPlantById = async (req, res) => {
     const { id } = req.params;
 
     const plant = await PlantModel.findById(id);
-
     return res.status(200).json(plant);
   } catch (error) {
     return res.status(500).json({
@@ -125,6 +125,12 @@ export const deletePlant = async (req, res) => {
   try {
     const { id } = req.params;
     const plant = await PlantModel.findByIdAndDelete(id);
+    await ListModel.updateMany(
+      {
+        plants: id,
+      },
+      { $pull: { plants: id } }
+    );
     return res.status(200).json({ msg: "Eliminación exitosa" });
   } catch (error) {
     return res.status(500).json({

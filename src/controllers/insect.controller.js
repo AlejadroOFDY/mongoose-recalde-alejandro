@@ -1,4 +1,5 @@
 import { InsectModel } from "../models/insect.model.js";
+import { ListModel } from "../models/list.model.js";
 
 export const createInsect = async (req, res) => {
   try {
@@ -35,7 +36,7 @@ export const createInsect = async (req, res) => {
       region,
       idioma,
     });
-    return res.status(200).json(newInsect);
+    return res.status(201).json(newInsect);
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -129,6 +130,12 @@ export const deleteInsect = async (req, res) => {
   try {
     const { id } = req.params;
     const insect = await InsectModel.findByIdAndDelete(id);
+    await ListModel.updateMany(
+      {
+        insects: id,
+      },
+      { $pull: { insects: id } }
+    );
     return res.status(200).json({ msg: "Eliminación exitosa" });
   } catch (error) {
     return res.status(500).json({

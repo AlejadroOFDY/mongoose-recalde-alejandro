@@ -12,13 +12,11 @@ const ProjectSchema = new Schema(
     duration: {
       type: String,
     },
-    members: [
-      {
-        type: Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-    ],
+    creator: {
+      type: Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { versionKey: false }
 );

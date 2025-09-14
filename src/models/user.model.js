@@ -47,9 +47,14 @@ const UserSchema = new Schema(
         ref: "Project",
       },
     ],
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     versionKey: false,
+    timestamps: true,
   }
 );
 

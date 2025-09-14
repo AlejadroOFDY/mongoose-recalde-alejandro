@@ -3,20 +3,21 @@ import { UserModel } from "../models/user.model.js";
 
 export const createList = async (req, res) => {
   try {
-    const { list_name, description, author } = req.body;
+    const { list_name, description, author, lists, plants, insects } = req.body;
 
     const newList = await ListModel.create({
       list_name,
       description,
       author,
+      lists,
+      plants: plants || [],
+      insects: insects || [],
     });
-    await UserModel.updateMany(
-      { _id: { $in: author } },
-      { $push: { author: newList._id } }
-    );
-    return res.status(200).json(newList);
+    await UserModel.findByIdAndUpdate(author, {
+      $push: { lists: newList._id },
+    });
+    return res.status(201).json(newList);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       error: error.message,
       msg: "Error interno del Servidor",
@@ -27,7 +28,11 @@ export const createList = async (req, res) => {
 // buscar todos
 export const findAllLists = async (req, res) => {
   try {
-    const lists = await ListModel.find().populate("author");
+    const lists = await ListModel.find().populate([
+      "author",
+      "plants",
+      "insects",
+    ]);
     return res.status(200).json(lists);
   } catch (error) {
     return res.status(500).json({
@@ -42,8 +47,11 @@ export const findListById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const list = await ListModel.findById(id).populate("author");
-
+    const list = await ListModel.findById(id).populate([
+      "author",
+      "plants",
+      "insects",
+    ]);
     return res.status(200).json(list);
   } catch (error) {
     return res.status(500).json({
@@ -57,11 +65,11 @@ export const findListById = async (req, res) => {
 export const updateList = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, duration } = req.body;
+    const { name, description, duration, plants, insects } = req.body;
 
     const list = await ListModel.findByIdAndUpdate(
       id,
-      { name, description, duration },
+      { name, description, duration, plants, insects },
       { new: true }
     );
     return res.status(200).json({ msg: "Actualización exitosa" });
