@@ -5,6 +5,7 @@ const PlantSchema = new Schema(
     nombreCientifico: {
       type: String,
       required: true,
+      unique: true,
     },
     reino: {
       type: String,
