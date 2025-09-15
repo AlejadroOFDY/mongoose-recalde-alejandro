@@ -8,8 +8,12 @@ import {
   findListById,
   updateList,
   deleteList,
+  addPlantToList,
+  addInsectToList,
 } from "../controllers/list.controller.js";
 
+router.post("/list/:listId/plant/:plantId", addPlantToList);
+router.post("/list/:listId/insect/:insectId", addInsectToList);
 router.post("/list", createList);
 router.get("/list", findAllLists);
 router.get("/list/:id", findListById);

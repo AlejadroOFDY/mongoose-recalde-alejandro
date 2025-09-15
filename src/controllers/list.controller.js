@@ -94,3 +94,40 @@ export const deleteList = async (req, res) => {
     });
   }
 };
+
+// agregar una planta a una lista
+export const addPlantToList = async (req, res) => {
+  try {
+    const { listId, plantId } = req.params;
+    const plantToList = await ListModel.findByIdAndUpdate(
+      listId,
+      { $push: { plants: plantId } },
+      { new: true }
+    ).populate("plants");
+
+    return res.status(200).json(plantToList);
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+      msg: "Error interno del Servidor",
+    });
+  }
+};
+
+export const addInsectToList = async (req, res) => {
+  try {
+    const { listId, insectId } = req.params;
+    const insectToList = await ListModel.findByIdAndUpdate(
+      listId,
+      { $push: { insects: insectId } },
+      { new: true }
+    ).populate("insects");
+
+    return res.status(200).json(insectToList);
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+      msg: "Error interno del Servidor",
+    });
+  }
+};
