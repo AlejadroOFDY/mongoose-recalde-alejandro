@@ -49,7 +49,7 @@ export const createInsect = async (req, res) => {
 // buscar todos
 export const findAllInsects = async (req, res) => {
   try {
-    const insects = await InsectModel.find();
+    const insects = await InsectModel.find().populate("lists");
     return res.status(200).json(insects);
   } catch (error) {
     return res.status(500).json({
@@ -64,7 +64,7 @@ export const findInsectById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const insect = await InsectModel.findById(id);
+    const insect = await InsectModel.findById(id).populate("lists");
 
     return res.status(200).json(insect);
   } catch (error) {

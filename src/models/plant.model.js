@@ -47,7 +47,16 @@ const PlantSchema = new Schema(
       },
     ],
   },
-  { versionKey: false }
+  {
+    versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
+PlantSchema.virtual("lists", {
+  ref: "List", // Modelo que se va a popular
+  localField: "_id", // campo local
+  foreignField: "plants", // El campo dentro de ListModel
+});
 
 export const PlantModel = model("Plant", PlantSchema);

@@ -50,7 +50,17 @@ const InsectSchema = new Schema(
       },
     ],
   },
-  { versionKey: false }
+  {
+    versionKey: false,
+    toJSON: { virtuals: true }, // toJson y toObject son configuraciones que permiten que enviar datos
+    toObject: { virtuals: true }, // al cliente, incluyendo los campos virtuales
+  }
 );
+
+InsectSchema.virtual("lists", {
+  ref: "List",
+  localField: "_id",
+  foreignField: "insects",
+});
 
 export const InsectModel = model("Insect", InsectSchema);
