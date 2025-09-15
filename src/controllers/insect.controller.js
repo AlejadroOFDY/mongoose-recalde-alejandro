@@ -52,6 +52,8 @@ export const createInsect = async (req, res) => {
 export const findAllInsects = async (req, res) => {
   try {
     const insects = await InsectModel.find().populate("lists");
+
+    console.log(insects);
     return res.status(200).json(insects);
   } catch (error) {
     return res.status(500).json({
