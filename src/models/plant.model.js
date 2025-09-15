@@ -2,6 +2,10 @@ import { Schema, model, Types } from "mongoose";
 
 const PlantSchema = new Schema(
   {
+    nombreCientifico: {
+      type: String,
+      required: true,
+    },
     reino: {
       type: String,
       default: "Plantae",
