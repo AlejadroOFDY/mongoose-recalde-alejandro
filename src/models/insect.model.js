@@ -57,8 +57,8 @@ const InsectSchema = new Schema(
   },
   {
     versionKey: false,
-    // toJSON: { virtuals: true }, // toJson y toObject son configuraciones que permiten que enviar datos
-    // toObject: { virtuals: true }, // al cliente, incluyendo los campos virtuales
+    toJSON: { virtuals: true }, // toJson y toObject son configuraciones que permiten que enviar datos
+    toObject: { virtuals: true }, // al cliente, incluyendo los campos virtuales
   }
 );
 
